@@ -1,7 +1,6 @@
 import logging
 import sys
 
-
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stderr)])
 
 import argparse
@@ -26,9 +25,11 @@ class MCPServer:
 
     def __init__(self, name: str = "openmanus"):
         self.server = FastMCP(name)
+        # 工具注册表，用于存放所有可用的工具对象，key 为工具名
         self.tools: Dict[str, BaseTool] = {}
 
         # Initialize standard tools
+        # 构造函数里直接注册了四个常用工具，方便开箱即用
         self.tools["bash"] = Bash()
         self.tools["browser"] = BrowserUseTool()
         self.tools["editor"] = StrReplaceEditor()

@@ -50,16 +50,16 @@ class ToolCall(BaseModel):
     type: str = "function"
     function: Function
 
-
+#用于表示一次对话消息
 class Message(BaseModel):
     """Represents a chat message in the conversation"""
 
-    role: ROLE_TYPE = Field(...)  # type: ignore
-    content: Optional[str] = Field(default=None)
-    tool_calls: Optional[List[ToolCall]] = Field(default=None)
-    name: Optional[str] = Field(default=None)
-    tool_call_id: Optional[str] = Field(default=None)
-    base64_image: Optional[str] = Field(default=None)
+    role: ROLE_TYPE = Field(...)  # type: ignore # 消息角色（如 user、assistant、system、tool）
+    content: Optional[str] = Field(default=None) # 消息内容（文本）
+    tool_calls: Optional[List[ToolCall]] = Field(default=None) # 工具调用信息（function call 场景）
+    name: Optional[str] = Field(default=None) # 工具名或角色名
+    tool_call_id: Optional[str] = Field(default=None) # 工具调用的唯一ID
+    base64_image: Optional[str] = Field(default=None) # 图片内容（base64编码）
 
     def __add__(self, other) -> List["Message"]:
         """支持 Message + list 或 Message + Message 的操作"""

@@ -5,12 +5,14 @@ from pydantic import BaseModel, Field
 from app.tool import BaseTool
 
 
+# 用于根据指定的输出类型动态生成结构化的响应格式，并自动生成 JSON Schema 参数定义，适合 LLM function call 场景
 class CreateChatCompletion(BaseTool):
     name: str = "create_chat_completion"
     description: str = (
         "Creates a structured completion with specified output formatting."
     )
 
+    # 类型到 JSON Schema 类型的映射表
     # Type mapping for JSON schema
     type_mapping: dict = {
         str: "string",
@@ -20,14 +22,33 @@ class CreateChatCompletion(BaseTool):
         dict: "object",
         list: "array",
     }
+
+    # 响应的类型（可以是 str、list、dict、Pydantic 模型等）
     response_type: Optional[Type] = None
+
+    # 必填字段，默认是 ["response"]
     required: List[str] = Field(default_factory=lambda: ["response"])
 
     def __init__(self, response_type: Optional[Type] = str):
         """Initialize with a specific response type."""
         super().__init__()
-        self.response_type = response_type
-        self.parameters = self._build_parameters()
+        self.response_type = response_type # 指定响应类型（如 str、list、dict、Pydantic 模型等）
+        self.parameters = self._build_parameters() # 根据类型自动生成 JSON Schema 参数定义
+
+        # 例子：
+        # tool = CreateChatCompletion(response_type=str)
+        # print(tool.parameters)
+        # 自动生成的JSON Schema：
+        # {
+        # "type": "object",
+        # "properties": {
+        #     "response": {
+        #     "type": "string",
+        #     "description": "The response text that should be delivered to the user."
+        #     }
+        # },
+        # "required": ["response"]
+        # }
 
     def _build_parameters(self) -> dict:
         """Build parameters schema based on response type."""

@@ -15,7 +15,6 @@ from app.llm import LLM
 from app.tool.base import BaseTool, ToolResult
 from app.tool.web_search import WebSearch
 
-
 _BROWSER_DESCRIPTION = """\
 A powerful browser automation tool that allows interaction with web pages through various actions.
 * This tool provides commands for controlling a browser session, navigating web pages, and extracting information
@@ -32,6 +31,21 @@ Key capabilities include:
 
 Note: When using element indices, refer to the numbered elements shown in the current browser state.
 """
+# 这是一个强大的浏览器自动化工具，可以通过多种操作与网页交互，包括：
+
+# 浏览器控制：控制浏览器会话、导航网页、提取信息。
+# 会话保持：会话在多次调用间保持，除非显式关闭。
+# 适用场景：需要浏览网站、填写表单、点击按钮、提取内容或进行网页搜索时使用。
+# 参数依赖：每个操作需要特定参数，具体见工具依赖说明。
+
+# 主要能力包括：
+# 导航：访问指定网址、返回、网页搜索、刷新页面。
+# 交互：点击元素、输入文本、下拉选择、发送键盘命令。
+# 滚动：按像素上下滚动，或滚动到指定文本。
+# 内容提取：根据目标提取和分析网页内容。
+# 标签管理：切换标签页、新建标签页、关闭标签页。
+
+
 
 Context = TypeVar("Context")
 
@@ -121,10 +135,11 @@ class BrowserUseTool(BaseTool, Generic[Context]):
         },
     }
 
-    lock: asyncio.Lock = Field(default_factory=asyncio.Lock)
-    browser: Optional[BrowserUseBrowser] = Field(default=None, exclude=True)
-    context: Optional[BrowserContext] = Field(default=None, exclude=True)
-    dom_service: Optional[DomService] = Field(default=None, exclude=True)
+    # 类属性定义
+    lock: asyncio.Lock = Field(default_factory=asyncio.Lock) # 用于线程同步的锁
+    browser: Optional[BrowserUseBrowser] = Field(default=None, exclude=True)    # 浏览器实例
+    context: Optional[BrowserContext] = Field(default=None, exclude=True)       # 浏览器上下文
+    dom_service: Optional[DomService] = Field(default=None, exclude=True)       # DOM服务实例
     web_search_tool: WebSearch = Field(default_factory=WebSearch, exclude=True)
 
     # Context for generic functionality

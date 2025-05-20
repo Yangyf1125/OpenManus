@@ -9,6 +9,8 @@ from app.logger import logger
 from app.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
 from app.tool import Terminate, ToolCollection
 from app.tool.ask_human import AskHuman
+# 搜索引擎本地化
+from app.tool.baidu_search import BaiduSearch
 from app.tool.browser_use_tool import BrowserUseTool
 from app.tool.mcp import MCPClients, MCPClientTool
 from app.tool.python_execute import PythonExecute
@@ -40,6 +42,7 @@ class Manus(ToolCallAgent):
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
             PythonExecute(),
+            BaiduSearch(),
             BrowserUseTool(),
             StrReplaceEditor(),
             AskHuman(),
