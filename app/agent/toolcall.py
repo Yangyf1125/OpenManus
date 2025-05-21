@@ -153,6 +153,11 @@ class ToolCallAgent(ReActAgent):
             # 如果工具调用模式为 AUTO，没有工具调用但有内容，继续
             # For 'auto' mode, continue with content if no commands but content exists
             if self.tool_choices == ToolChoice.AUTO and not self.tool_calls:
+
+                ################################################################
+                #self.state = AgentState.FINISHED
+                #######################################################################
+
                 return bool(content)
 
             # 有工具调用则返回 True，否则 False
