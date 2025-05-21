@@ -52,11 +52,11 @@ class MCPClients(ToolCollection):
         self.name = "mcp"  # Keep name for backward compatibility
 
 ###########################################################################################
-    def _normalize_server_id(self, server_id: str) -> str:
-        """Normalize server ID to only contain allowed characters."""
-        # Replace any non-alphanumeric characters (except _.-) with underscore
-        import re
-        return re.sub(r'[^a-zA-Z0-9_\.-]', '_', server_id)
+    # def _normalize_server_id(self, server_id: str) -> str:
+    #     """Normalize server ID to only contain allowed characters."""
+    #     # Replace any non-alphanumeric characters (except _.-) with underscore
+    #     import re
+    #     return re.sub(r'[^a-zA-Z0-9_\.-]', '_', server_id)
 
 ###########################################################################################
     # 通过 SSE（Server-Sent Events）协议连接到一个 MCP 服务器，并自动完成资源管理和工具注册
@@ -66,9 +66,9 @@ class MCPClients(ToolCollection):
         if not server_url:
             raise ValueError("Server URL is required.")
         # 2.确定 server_id
-        #server_id = server_id or server_url
+        server_id = server_id or server_url
 
-        server_id = self._normalize_server_id(server_id or server_url)
+        #server_id = self._normalize_server_id(server_id or server_url)
 
         # 3.断开已有连接
         # Always ensure clean disconnection before new connection
@@ -96,7 +96,7 @@ class MCPClients(ToolCollection):
         if not command:
             raise ValueError("Server command is required.")
         # 2.确定 server_id
-        server_id = self._normalize_server_id(server_id or command)
+        server_id = self.server_id or command
 
         # Always ensure clean disconnection before new connection
         # 3.断开已有连接
